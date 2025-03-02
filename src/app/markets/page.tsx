@@ -36,7 +36,7 @@ export default function Markets() {
                   <TableCell className="text-right">INV001</TableCell>
                   <TableCell className="text-right">پرداخت شده</TableCell>
                   <TableCell className="text-right">کارت اعتباری</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
+                  <TableCell className="text-right">{"۲۵۰۰۰۰"}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
