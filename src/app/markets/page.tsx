@@ -1,45 +1,73 @@
-"use client"
-import useSWR from "swr"
+"use client";
+import useSWR from "swr";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table"
-  
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useState } from "react";
+import AdvancedRtlTable from "@/components/table";
 
 export default function Markets() {
-    const fetcher = (...args: [string, RequestInit?]) => fetch(...args).then(res => res.json())
-    const { data, error } = useSWR("https://api.bitpin.ir/v1/mkt/markets/", fetcher)
-    
-    console.log({ data })
-    
-    return (
-        <div dir="rtl" className="text-right">
-            صفحه بازارها
+  const fetcher = (...args: [string, RequestInit?]) =>
+    fetch(...args).then((res) => res.json());
+  const { data, error } = useSWR(
+    "https://api.bitpin.ir/v1/mkt/markets/",
+    fetcher
+  );
 
-            <Table dir="rtl" className="text-right">
-              <TableCaption>لیست فاکتورهای اخیر شما.</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-right">فاکتور</TableHead>
-                  <TableHead className="text-right">وضعیت</TableHead>
-                  <TableHead className="text-right">روش</TableHead>
-                  <TableHead className="text-right">مبلغ</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="text-right">INV001</TableCell>
-                  <TableCell className="text-right">پرداخت شده</TableCell>
-                  <TableCell className="text-right">کارت اعتباری</TableCell>
-                  <TableCell className="text-right">{"۲۵۰۰۰۰"}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+  const [selectedMarketBase, setSelectedMarketBase] = useState("تومان");
+
+  console.log({ data });
+
+  const columns = [
+    { header: "نام رمزارز", accessor: "id", render: (row) => row?.currency1?.title_fa },
+    { header: "آخرین قیمت / قیمت جهانی", accessor: "price" },
+    { header: "تغییر 24h", accessor: "id",  render: (row) => row?.price_info?.change },
+    { header: "ارزش معاملات 24h", accessor: "market_cap" },
+    { header: "حجم معاملات 24h", accessor: "volume_24h", },
+  ];
+  
+  const handleRowClick = (row) => {
+    console.log("Row clicked:", row);
+  };
+
+  return (
+    <div dir="rtl" className="text-right">
+      صفحه بازارها
+      <div className="flex justify-end">
+        <div className="border flex gap-4 py-3 px-5 rounded">
+          <span
+            className={`px-3 py-2 rounded cursor-pointer transition-colors ${
+              selectedMarketBase === "تتر" ? "bg-[#DEF3DE]" : "bg-white"
+            }`}
+            onClick={() => setSelectedMarketBase("تتر")}
+          >
+            تتر
+          </span>
+          <span
+            className={`px-3 py-2 rounded cursor-pointer transition-colors ${
+              selectedMarketBase === "تومان" ? "bg-[#DEF3DE]" : "bg-white"
+            }`}
+            onClick={() => setSelectedMarketBase("تومان")}
+          >
+            تومان
+          </span>
         </div>
-    )
+      </div>
+
+      
+
+      <AdvancedRtlTable 
+        caption="لیست فاکتورهای اخیر شما"
+        columns={columns}
+        data={data?.results || []}
+        onRowClick={handleRowClick}
+      />
+    </div>
+  );
 }
