@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import AdvancedRtlTable from "@/components/table";
+import Image from "next/image";
 
 export default function Markets() {
   const fetcher = (...args: [string, RequestInit?]) =>
@@ -28,7 +29,17 @@ export default function Markets() {
     {
       header: "نام رمزارز",
       accessor: "id",
-      render: (row) => row?.currency1?.title_fa,
+      render: (row) => {
+        return (
+          <div className="flex gap-2 items-center">
+            <img src={row?.currency1?.image} width={30} height={30} alt="" />
+            <div className="flex flex-col">
+              <span className="text-[12px]">{`${row?.currency1?.code} / ${row?.currency2?.code}`}</span>
+              <span className="text-[#676767] text-[12px]">{row?.currency1?.title_fa}</span>
+            </div>
+          </div>
+        );
+      },
     },
     { header: "آخرین قیمت", accessor: "price" },
     {
@@ -65,7 +76,11 @@ export default function Markets() {
             <span
               className={`px-3 py-[6px] rounded-[10px] cursor-pointer transition-colors ${
                 selectedMarketBase === "تومان" ? "bg-[#DEF3DE]" : "bg-white"
-              } ${selectedMarketBase === "تومان" ? "text-[#1FB87F]": "text-[#939696]" }`}
+              } ${
+                selectedMarketBase === "تومان"
+                  ? "text-[#1FB87F]"
+                  : "text-[#939696]"
+              }`}
               onClick={() => setSelectedMarketBase("تومان")}
             >
               تومان
@@ -80,6 +95,7 @@ export default function Markets() {
         onRowClick={handleRowClick}
         pageSize={10}
         pageSizeOptions={[5, 10, 15, 20]}
+        rowHeight={80}
       />
     </div>
   );

@@ -22,6 +22,7 @@ export default function AdvancedRtlTable({
   pageSizeOptions = [5, 10, 25, 50, 100],
   showPageSizeOptions = true,
   onPageSizeChange = null,
+  rowHeight = null,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPageSize, setCurrentPageSize] = useState(pageSize);
@@ -82,6 +83,7 @@ export default function AdvancedRtlTable({
     return pages;
   };
 
+
   return (
     <div className="space-y-4">
       <Table dir="rtl" className={`text-right ${className}`}>
@@ -104,6 +106,9 @@ export default function AdvancedRtlTable({
                 key={`row-${rowIndex}`} 
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
                 className={onRowClick ? "cursor-pointer hover:bg-slate-50" : ""}
+                style={{
+                    height: rowHeight || 50
+                }} // Apply row height style
               >
                 {columns.map((column, colIndex) => (
                   <TableCell key={`cell-${rowIndex}-${colIndex}`} className="text-right">
