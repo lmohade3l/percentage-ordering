@@ -26,8 +26,8 @@ export default function Markets() {
 
   const columns = [
     { header: "نام رمزارز", accessor: "id", render: (row) => row?.currency1?.title_fa },
-    { header: "آخرین قیمت / قیمت جهانی", accessor: "price" },
-    { header: "تغییر 24h", accessor: "id",  render: (row) => row?.price_info?.change },
+    { header: "آخرین قیمت", accessor: "price" },
+    { header: "تغییرات", accessor: "id",  render: (row) => row?.price_info?.change },
     { header: "ارزش معاملات 24h", accessor: "market_cap" },
     { header: "حجم معاملات 24h", accessor: "volume_24h", },
   ];
@@ -60,14 +60,15 @@ export default function Markets() {
         </div>
       </div>
 
-      
 
-      <AdvancedRtlTable 
-        caption="لیست فاکتورهای اخیر شما"
-        columns={columns}
-        data={data?.results || []}
-        onRowClick={handleRowClick}
-      />
+<AdvancedRtlTable 
+            caption="لیست فاکتورهای اخیر شما (صفحه‌بندی سمت کلاینت)"
+            columns={columns}
+            data={data?.results || []}
+            onRowClick={handleRowClick}
+            pageSize={10}
+            pageSizeOptions={[5, 10, 15, 20]}
+          />
     </div>
   );
 }
