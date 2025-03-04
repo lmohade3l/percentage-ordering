@@ -1,21 +1,9 @@
 "use client";
 import useSWR from "swr";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdvancedRtlTable from "@/components/table";
-import Image from "next/image";
 import {
-  addSeparator,
   formatPersianNumber,
-  toPersianNumber,
 } from "@/lib/numberUtils";
 
 export default function Markets() {
@@ -27,6 +15,8 @@ export default function Markets() {
   );
 
   const [selectedMarketBase, setSelectedMarketBase] = useState("تومان");
+  const [refresh , setRefresh] = useState(0)
+  const [filteredData , setFilteredData] = useState([])
 
   console.log({ data });
 
@@ -94,6 +84,14 @@ export default function Markets() {
     console.log("Row clicked:", row);
   };
 
+  useEffect(() => {
+    if(!data) return;
+    const filtered = data?.results?.filter(d => selectedMarketBase==="تتر" ? d?.currency2?.code==="USDT" : d?.currency2?.code==="IRT")
+    setFilteredData(filtered)
+  } , [selectedMarketBase , data])
+
+  console.log({filteredData})
+
   return (
     <div dir="rtl" className="text-right border rounded-lg pb-2">
       <div className="flex justify-between items-center p-2 border-b">
@@ -108,7 +106,10 @@ export default function Markets() {
                   ? "text-[#1FB87F]"
                   : "text-[#939696]"
               }`}
-              onClick={() => setSelectedMarketBase("تتر")}
+              onClick={() =>{
+                setSelectedMarketBase("تتر")
+                setRefresh(p => p+1)
+              } }
             >
               تتر
             </span>
@@ -120,7 +121,10 @@ export default function Markets() {
                   ? "text-[#1FB87F]"
                   : "text-[#939696]"
               }`}
-              onClick={() => setSelectedMarketBase("تومان")}
+              onClick={() => {
+                setSelectedMarketBase("تومان")
+                setRefresh(p => p+1)
+              } }
             >
               تومان
             </span>
@@ -130,7 +134,7 @@ export default function Markets() {
 
       <AdvancedRtlTable
         columns={columns}
-        data={data?.results || []}
+        data={filteredData|| []}
         onRowClick={handleRowClick}
         pageSize={10}
         pageSizeOptions={[5, 10, 15, 20]}
