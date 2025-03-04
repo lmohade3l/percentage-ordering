@@ -159,7 +159,7 @@ export default function AdvancedRtlTable({
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`rounded p-1 ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+              className={`rounded p-1 ${currentPage === 1 ? 'text-gray-300' : 'text-gray-600 hover:bg-gray-100'}`}
               aria-label="صفحه قبل"
             >
               <ChevronRight className="h-5 w-5" />
@@ -187,7 +187,7 @@ export default function AdvancedRtlTable({
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`rounded p-1 ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+              className={`rounded p-1 ${currentPage === totalPages ? 'text-gray-300' : 'text-gray-600 hover:bg-gray-100'}`}
               aria-label="صفحه بعد"
             >
               <ChevronLeft className="h-5 w-5" />
