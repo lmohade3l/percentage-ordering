@@ -172,7 +172,7 @@ export default function AdvancedRtlTable({
                   onClick={() => typeof page === 'number' ? handlePageChange(page) : null}
                   className={`px-3 py-1 rounded ${
                     page === currentPage 
-                      ? 'bg-blue-500 text-white' 
+                      ? 'bg-[#00D890] text-white' 
                       : page === '...' 
                         ? '' 
                         : 'hover:bg-gray-100'

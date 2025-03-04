@@ -63,7 +63,7 @@ export default function Markets() {
       ),
     },
     {
-      header: "ارزش معاملات 24h",
+      header: "ارزش معاملات ۲۴ ساعت",
       accessor: "market_cap",
       render: (row) => <div className="flex flex-col">
       <span>{formatPersianNumber(row?.market_cap)}</span>
@@ -71,7 +71,7 @@ export default function Markets() {
     </div> ,
     },
     {
-      header: "حجم معاملات 24h",
+      header: "حجم معاملات ۲۴ ساعت",
       accessor: "volume_24h",
       render: (row) => <div className="flex flex-col">
       <span>{formatPersianNumber(row?.volume_24h)}</span>
