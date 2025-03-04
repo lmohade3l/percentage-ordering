@@ -12,6 +12,11 @@ import {
 import { useState } from "react";
 import AdvancedRtlTable from "@/components/table";
 import Image from "next/image";
+import {
+  addSeparator,
+  formatPersianNumber,
+  toPersianNumber,
+} from "@/lib/numberUtils";
 
 export default function Markets() {
   const fetcher = (...args: [string, RequestInit?]) =>
@@ -34,21 +39,55 @@ export default function Markets() {
           <div className="flex gap-2 items-center">
             <img src={row?.currency1?.image} width={30} height={30} alt="" />
             <div className="flex flex-col">
-              <span className="text-[12px]">{`${row?.currency1?.code} / ${row?.currency2?.code}`}</span>
-              <span className="text-[#676767] text-[12px]">{row?.currency1?.title_fa}</span>
+            <span className=" text-[14px] font-[500]">
+                {row?.currency1?.title_fa}
+              </span>
+              <span className="text-[#676767] text-[12px]">{`${row?.currency1?.code} / ${row?.currency2?.code}`}</span>
+      
             </div>
           </div>
         );
       },
     },
-    { header: "آخرین قیمت", accessor: "price" },
+    {
+      header: "آخرین قیمت",
+      accessor: "price",
+      render: (row) => <div className="flex flex-col">
+        <span>{formatPersianNumber(row?.price, 4)}</span>
+        <span className="text-[#676767]"> {row?.currency2?.title_fa}</span>
+      </div> ,
+    },
     {
       header: "تغییرات",
       accessor: "id",
-      render: (row) => row?.price_info?.change,
+      render: (row) => (
+        <span
+          className={`${
+            row?.price_info?.change > 0
+              ? "text-[#1FB87F]"
+              : row?.price_info?.change < 0
+              ? "text-[#EA373F]"
+              : "text-[#000]"
+          } font-[700] `}
+        >{`% ${formatPersianNumber(row?.price_info?.change, 2)} `}</span>
+      ),
     },
-    { header: "ارزش معاملات 24h", accessor: "market_cap" },
-    { header: "حجم معاملات 24h", accessor: "volume_24h" },
+    {
+      header: "ارزش معاملات 24h",
+      accessor: "market_cap",
+      render: (row) => <div className="flex flex-col">
+      <span>{formatPersianNumber(row?.market_cap)}</span>
+      <span className="text-[#676767]"> {row?.currency2?.title_fa}</span>
+    </div> ,
+    },
+    {
+      header: "حجم معاملات 24h",
+      accessor: "volume_24h",
+      render: (row) => <div className="flex flex-col">
+      <span>{formatPersianNumber(row?.volume_24h)}</span>
+      <span className="text-[#676767]"> {row?.currency2?.title_fa}</span>
+    </div> ,
+    },
   ];
 
   const handleRowClick = (row) => {
